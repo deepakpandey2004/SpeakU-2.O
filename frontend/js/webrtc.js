@@ -33,8 +33,6 @@
     let isCallActive = false;
     let callStartTime = null;
     let callTimerInterval = null;
-    let callStartTime = null;
-    let callTimerInterval = null;
     let sessionCountdownInterval = null;
     const SESSION_LIMIT_SECONDS = 10 * 60; // 10 minutes
     let isInitiator = false;
