@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SpeakU</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span>🎙️</span> speaku
+        </div>
+        <div class="nav-links">
+            <span class="nav-user" id="nav-username"></span>
+            <a href="/match.html" class="btn btn-secondary btn-sm">Find Match</a>
+            <button class="btn btn-secondary btn-sm" onclick="Auth.logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <div class="profile-header">
+            <div class="profile-avatar" id="avatar">?</div>
+            <div class="profile-info">
+                <h2 id="display-username">Loading...</h2>
+                <p id="display-email">Loading...</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-lingos">0</div>
+                <div class="stat-label">💎 Lingos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-calls">0</div>
+                <div class="stat-label">📞 Calls</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-rating">0.0</div>
+                <div class="stat-label">⭐ Rating</div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                    <div class="form-error" id="username-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="native_lang">🗣️ I speak (Native Language)</label>
+                    <select id="native_lang" required>
+                        <option value="">Select your native language</option>
+                    </select>
+                    <div class="form-error" id="native_lang-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="learning_lang">📚 I want to learn</label>
+                    <select id="learning_lang" required>
+                        <option value="">Select language to practice</option>
+                    </select>
+                    <div class="form-error" id="learning_lang-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bio">Bio (Optional)</label>
+                    <input type="text" id="bio" placeholder="Tell others about yourself..." maxlength="200">
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submit-btn">Save Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/config.js?v=2"></script>
+<script src="/js/ui.js?v=2"></script>
+<script src="/js/auth.js?v=2"></script>
+<script src="/js/api.js?v=2"></script>
+<script src="/js/websocket.js?v=2"></script>
+<script src="/js/match.js?v=2"></script>
+    <script>
+        if (!requireAuth()) throw new Error('Not authenticated');
+
+        const form = document.getElementById('profile-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const nativeSelect = document.getElementById('native_lang');
+        const learningSelect = document.getElementById('learning_lang');
+
+        function populateLanguages() {
+            CONFIG.LANGUAGES.forEach(lang => {
+                nativeSelect.appendChild(new Option(`${lang.flag} ${lang.name}`, lang.code));
+                learningSelect.appendChild(new Option(`${lang.flag} ${lang.name}`, lang.code));
+            });
+        }
+
+        function showError(fieldId, message) {
+            const errorEl = document.getElementById(`${fieldId}-error`);
+            if (message) {
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+            } else {
+                errorEl.style.display = 'none';
+            }
+        }
+
+        function clearErrors() {
+            ['username', 'native_lang', 'learning_lang'].forEach(id => showError(id, ''));
+        }
+
+        async function loadProfile() {
+            Loader.show('Loading profile...');
+            try {
+                const profile = await API.getProfile();
+                Loader.hide();
+                if (!profile) return;
+
+                document.getElementById('nav-username').textContent = profile.username;
+                document.getElementById('display-username').textContent = profile.username;
+                document.getElementById('display-email').textContent = profile.email;
+                document.getElementById('avatar').textContent = profile.username.charAt(0).toUpperCase();
+
+                document.getElementById('stat-lingos').textContent = profile.lingos_balance || 0;
+                document.getElementById('stat-calls').textContent = profile.total_calls || 0;
+                document.getElementById('stat-rating').textContent = (profile.avg_rating || 0).toFixed(1);
+
+                document.getElementById('username').value = profile.username || '';
+                document.getElementById('bio').value = profile.bio || '';
+
+                if (profile.native_lang) nativeSelect.value = profile.native_lang;
+                if (profile.learning_lang) learningSelect.value = profile.learning_lang;
+
+                Auth.saveUserData(profile);
+            } catch {
+                Loader.hide();
+                Toast.error('Failed to load profile');
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            const username = document.getElementById('username').value.trim();
+            const native_lang = nativeSelect.value;
+            const learning_lang = learningSelect.value;
+            const bio = document.getElementById('bio').value.trim();
+
+            let hasError = false;
+
+            const usernameError = validateField(username, CONFIG.VALIDATION.USERNAME);
+            if (usernameError) { showError('username', usernameError); hasError = true; }
+
+            if (!native_lang) { showError('native_lang', 'Please select your native language'); hasError = true; }
+            if (!learning_lang) { showError('learning_lang', 'Please select learning language'); hasError = true; }
+
+            if (native_lang && learning_lang && native_lang === learning_lang) {
+                showError('learning_lang', 'Learning language must be different');
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
+            Loader.show('Updating profile...');
+
+            try {
+                const updated = await API.updateProfile({ username, native_lang, learning_lang, bio: bio || null });
+                Loader.hide();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save Profile';
+
+                if (updated) {
+                    Auth.saveUserData(updated);
+                    Toast.success('Profile updated!');
+                    setTimeout(() => redirectTo('/home.html'), 800);
+                }
+            } catch (error) {
+                Loader.hide();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Save Profile';
+                Toast.error(error.data?.detail || 'Failed to update profile');
+            }
+        });
+
+        populateLanguages();
+        loadProfile();
+    </script>
+</body>
+</html>

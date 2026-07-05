@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - SpeakU</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Stats Bar -->
+        <div class="top-bar">
+            <div class="profile-mini" onclick="redirectTo('/profile.html')">
+                <div class="profile-mini-avatar" id="mini-avatar">?</div>
+                <div class="profile-mini-badge" id="mini-badge">0</div>
+            </div>
+            
+            <div class="top-stats">
+                <div class="stat-item">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-num" id="streak-count">0</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-num" id="energy-count">10/10</div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <div class="stat-icon">💎</div>
+                    <div class="stat-num" id="lingos-count">0</div>
+                </div>
+            </div>
+
+            <div class="brand-mini">
+                <div class="brand-mini-icon">S</div>
+            </div>
+        </div>
+
+        <!-- Main Scrollable Content -->
+        <div class="home-content">
+            <!-- Streak Card -->
+            <div class="streak-card">
+                <div class="streak-icon">🎁</div>
+                <div class="streak-text">
+                    <div class="streak-title">Start a streak and get <strong>gifts!</strong></div>
+                </div>
+                <button class="streak-btn">Let's go</button>
+            </div>
+
+            <!-- SpeakU Rooms Banner -->
+            <div class="rooms-banner">
+                <div class="rooms-banner-left">
+                    <div class="rooms-icon">🎙️</div>
+                    <div>
+                        <div class="rooms-brand">SPEAKU</div>
+                        <div class="rooms-title">Rooms</div>
+                    </div>
+                </div>
+                <button class="rooms-btn" onclick="Toast.info('Coming soon!')">Show</button>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="section-header">
+                <h3>Recent activity</h3>
+                <a href="#" onclick="Toast.info('Coming soon!'); return false;">Show all</a>
+            </div>
+
+            <div class="activity-card" id="activity-list">
+                <div class="activity-empty">
+                    <div class="activity-empty-icon">👋</div>
+                    <div class="activity-empty-text">No recent activity yet</div>
+                    <div class="activity-empty-sub">Start a call to see your history here</div>
+                </div>
+            </div>
+
+            <!-- SpeakU Rooms Section -->
+            
+<div class="section-header" style="margin-top: 32px;">
+    <div class="section-title-wrap">
+        <h3>SpeakU Rooms</h3>
+        <span class="section-badge">Coming Soon</span>
+    </div>
+    <a href="#" onclick="Toast.info('Coming soon!'); return false;">Show all</a>
+</div>
+
+            <div class="room-card">
+                <div class="room-tags">
+                    <span class="room-tag room-tag-gray">Practice Room</span>
+                    <span class="room-tag room-tag-pink">English</span>
+                    <span class="room-tag room-tag-green">Any level</span>
+                </div>
+                <div class="room-title">Room can be closed at any time</div>
+                <div class="room-users">
+                    <div class="room-user">
+                        <div class="room-user-avatar" style="background: linear-gradient(135deg, #a78bfa, #ec4899);">P</div>
+                        <div class="room-user-name">⭐ 3 Deepak</div>
+                    </div>
+                    <div class="room-user">
+                        <div class="room-user-avatar" style="background: linear-gradient(135deg, #60a5fa, #a78bfa);">🧑</div>
+                    </div>
+                </div>
+                <div class="room-footer">
+                    <div class="room-stats">
+                        <span>🎤 2</span>
+                        <span>🎧 1</span>
+                    </div>
+                    <button class="room-join-btn" onclick="Toast.info('Coming soon!')">Join for 1 ⚡</button>
+                </div>
+            </div>
+
+            <!-- Premium Card -->
+<div class="premium-card">
+    <div class="premium-icon">🚀</div>
+    <div class="premium-content">
+        <div class="premium-title">SpeakU <span class="premium-badge">Free Now ⚡</span></div>
+        <div class="premium-features">
+            🎁 Free for first 100 users<br>
+            🎙️ Unlimited voice calls<br>
+            🚫 No advertising
+        </div>
+        <div class="premium-note">Limited time offer • Paid soon</div>
+        <button class="premium-btn" onclick="Toast.success('You are enjoying free access!')">Claim free access</button>
+    </div>
+</div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" onclick="Toast.info('Coming soon!')">
+                <div class="nav-icon">💬</div>
+                <div class="nav-label">Friends</div>
+            </div>
+            <div class="nav-item nav-start" onclick="openStartModal()">
+                <div class="nav-start-btn">
+                    <span>S</span>
+                </div>
+                <div class="nav-label">Start</div>
+            </div>
+            <div class="nav-item" onclick="redirectTo('/profile.html')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Me</div>
+            </div>
+            <div class="nav-item" onclick="Toast.info('Coming soon!')">
+                <div class="nav-icon">💰</div>
+                <div class="nav-label">Stock</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Modal -->
+    <div class="modal-overlay" id="start-modal" style="display: none;" onclick="closeStartModal(event)">
+        <button class="modal-close-btn" onclick="closeStartModal()">✕</button>
+        <div class="modal-options">
+            <div class="modal-option" onclick="openPracticeModal()">
+                <div class="modal-option-icon">👥</div>
+                <div class="modal-option-label">Practice & Learn</div>
+            </div>
+            <div class="modal-option modal-option-disabled" onclick="Toast.info('Coming soon!')">
+                <div class="modal-option-icon">💰</div>
+                <div class="modal-option-label">Help & Earn</div>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Practice & Learn Modal -->
+    <div class="modal-overlay" id="practice-modal" style="display: none;">
+        <div class="modal-top-bar">
+            <button class="modal-back-btn" onclick="closePracticeModal()">←</button>
+            <div class="modal-top-title">Practice & Learn</div>
+            <button class="modal-close-btn-inline" onclick="closeAllModals()">✕</button>
+        </div>
+        <div class="modal-options">
+            <div class="modal-option" onclick="startOneOnOneCall()">
+                <div class="modal-option-icon">📞</div>
+                <div class="modal-option-label">Start a call<br>1 on 1</div>
+            </div>
+            <div class="modal-option modal-option-disabled" onclick="Toast.info('Coming soon!')">
+                <div class="modal-option-icon">🎧</div>
+                <div class="modal-option-label">Practice in<br>a group</div>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+        </div>
+        <div class="modal-footer-text">
+            How would you like to practice? Choose an option and take your languages to a new level!
+        </div>
+    </div>
+
+    <script src="/js/config.js?v=2"></script>
+<script src="/js/ui.js?v=2"></script>
+<script src="/js/auth.js?v=2"></script>
+<script src="/js/api.js?v=2"></script>
+<script src="/js/websocket.js?v=2"></script>
+<script src="/js/match.js?v=2"></script>
+    <script>
+        if (!requireAuth()) throw new Error('Not authenticated');
+
+        async function loadUserData() {
+            try {
+                const profile = await API.getProfile();
+                if (!profile) return;
+
+                if (!profile.native_lang || !profile.learning_lang) {
+                    Toast.warning('Please complete your profile');
+                    setTimeout(() => redirectTo(CONFIG.ROUTES.PROFILE), 1000);
+                    return;
+                }
+
+                document.getElementById('mini-avatar').textContent = profile.username.charAt(0).toUpperCase();
+                document.getElementById('mini-badge').textContent = profile.total_calls || 0;
+                document.getElementById('lingos-count').textContent = profile.lingos_balance || 0;
+                document.getElementById('streak-count').textContent = profile.total_calls > 0 ? profile.total_calls : 0;
+
+                Auth.saveUserData(profile);
+            } catch (error) {
+                console.error('Failed to load profile:', error);
+            }
+        }
+
+        function openStartModal() {
+            document.getElementById('start-modal').style.display = 'flex';
+        }
+
+        function closeStartModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('start-modal').style.display = 'none';
+        }
+
+        function openPracticeModal() {
+            document.getElementById('start-modal').style.display = 'none';
+            document.getElementById('practice-modal').style.display = 'flex';
+        }
+
+        function closePracticeModal() {
+            document.getElementById('practice-modal').style.display = 'none';
+            document.getElementById('start-modal').style.display = 'flex';
+        }
+
+        function closeAllModals() {
+            document.getElementById('start-modal').style.display = 'none';
+            document.getElementById('practice-modal').style.display = 'none';
+        }
+
+        function startOneOnOneCall() {
+            redirectTo('/match.html');
+        }
+
+        loadUserData();
+    </script>
+</body>
+</html>

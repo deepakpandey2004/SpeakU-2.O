@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Sign Up - SpeakU</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+    body {
+        background: #1a1a1a !important;
+    }
+    .auth-wrapper {
+        position: relative;
+        z-index: 10;
+        min-height: 100vh;
+        padding: 40px 32px;
+    }
+    .auth-form input,
+    .auth-form button,
+    .auth-form a,
+    .back-btn {
+        position: relative;
+        z-index: 20;
+        pointer-events: auto !important;
+    }
+</style>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-header">
+            <a href="/" class="back-btn">← Back</a>
+            <h1 class="auth-title">Hello, welcome!</h1>
+            <p class="auth-subtitle">Create your account to get started</p>
+        </div>
+
+        <form class="auth-form" id="register-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Write your username" autocomplete="username" required>
+                <div class="form-error" id="username-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Your email" autocomplete="email" required>
+                <div class="form-error" id="email-error"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="********" autocomplete="new-password" required>
+                    <div class="form-error" id="password-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Repeat Password</label>
+                    <input type="password" id="confirm-password" placeholder="********" autocomplete="new-password" required>
+                    <div class="form-error" id="confirm-password-error"></div>
+                </div>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">
+                    I am at least <strong>16 years old</strong>, and I agree to the 
+                    <a href="#" onclick="return false;">terms and conditions</a>.
+                </label>
+            </div>
+            <div class="form-error" id="terms-error"></div>
+
+            <button type="submit" class="btn btn-primary" id="submit-btn">Sign up</button>
+
+            <p class="link-text">
+                Already have an account? <a href="/login.html">Log in</a>
+            </p>
+        </form>
+    </div>
+
+    <script src="/js/config.js?v=3"></script>
+    <script src="/js/ui.js?v=3"></script>
+    <script src="/js/auth.js?v=3"></script>
+    <script src="/js/api.js?v=3"></script>
+    <script>
+        console.log('REGISTER PAGE LOADED - Version 3');
+        
+        // Clear any old session when accessing register page
+        Auth.clearAll();
+
+        const form = document.getElementById('register-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        function showError(fieldId, message) {
+            const errorEl = document.getElementById(`${fieldId}-error`);
+            if (message) {
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+            } else {
+                errorEl.style.display = 'none';
+            }
+        }
+
+        function clearErrors() {
+            ['username', 'email', 'password', 'confirm-password', 'terms'].forEach(id => showError(id, ''));
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const termsAccepted = document.getElementById('terms').checked;
+
+            let hasError = false;
+
+            const usernameError = validateField(username, CONFIG.VALIDATION.USERNAME);
+            if (usernameError) { showError('username', usernameError); hasError = true; }
+
+            if (!CONFIG.VALIDATION.EMAIL.PATTERN.test(email)) {
+                showError('email', 'Please enter a valid email');
+                hasError = true;
+            }
+
+            const passwordError = validateField(password, CONFIG.VALIDATION.PASSWORD);
+            if (passwordError) { showError('password', passwordError); hasError = true; }
+
+            if (password !== confirmPassword) {
+                showError('confirm-password', 'Passwords do not match');
+                hasError = true;
+            }
+
+            if (!termsAccepted) {
+                showError('terms', 'You must be 16+ and accept terms');
+                hasError = true;
+            }
+
+            if (hasError) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating account...';
+            Loader.show('Creating your account...');
+
+            try {
+                const data = await API.register(username, email, password);
+                Loader.hide();
+                if (data && data.access_token) {
+                    Toast.success('Welcome to SpeakU!');
+                    setTimeout(() => redirectTo('/profile.html'), 800);
+                }
+            } catch (error) {
+                Loader.hide();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Sign up';
+                if (error.data && error.data.detail) {
+                    Toast.error(error.data.detail);
+                } else {
+                    Toast.error('Registration failed. Please try again.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

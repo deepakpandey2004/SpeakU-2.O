@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Call - SpeakU</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="call-container">
+        <div id="connecting-state">
+            <div class="call-avatar" id="partner-avatar">?</div>
+            <div class="call-name" id="partner-name">Connecting...</div>
+            <div class="call-language" id="partner-langs"></div>
+            <div class="call-timer" id="connection-status" style="font-size: 18px;">🔄 Establishing connection...</div>
+        </div>
+
+        <div id="call-state" style="display: none;">
+            <div class="call-avatar" id="partner-avatar-2">?</div>
+            <div class="call-name" id="partner-name-2"></div>
+            <div class="call-language" id="partner-langs-2"></div>
+            <div class="call-timer" id="call-timer">00:00</div>
+            
+            <div style="margin-top: 8px; color: var(--text-secondary); font-size: 14px;">
+                <span id="connection-quality">🟢 Connected</span>
+            </div>
+
+            <div class="call-controls">
+                <button class="call-btn call-btn-mute" id="mute-btn" title="Mute/Unmute">🎤</button>
+                <button class="call-btn call-btn-end" id="end-btn" title="End Call">📞</button>
+                <button class="call-btn call-btn-mute" id="speaker-btn" title="Speaker">🔊</button>
+            </div>
+        </div>
+
+        <audio id="remote-audio" autoplay playsinline></audio>
+    </div>
+
+    <div id="rating-modal" class="rating-overlay" style="display: none;">
+        <div class="rating-card">
+            <h2>Rate Your Partner</h2>
+            <p style="color: var(--text-secondary); font-size: 14px;" id="rate-partner-name">How was your conversation?</p>
+            
+            <div class="stars" id="stars">
+                <span class="star" data-rating="1">⭐</span>
+                <span class="star" data-rating="2">⭐</span>
+                <span class="star" data-rating="3">⭐</span>
+                <span class="star" data-rating="4">⭐</span>
+                <span class="star" data-rating="5">⭐</span>
+            </div>
+
+            <textarea class="feedback-input" id="feedback" placeholder="Share your experience (optional)" maxlength="500"></textarea>
+
+            <div style="display: flex; gap: 12px; margin-top: 8px;">
+                <button class="btn btn-secondary" id="skip-rating">Skip</button>
+                <button class="btn btn-primary" id="submit-rating" disabled>Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js?v=2"></script>
+<script src="/js/ui.js?v=2"></script>
+<script src="/js/auth.js?v=2"></script>
+<script src="/js/api.js?v=2"></script>
+<script src="/js/websocket.js?v=2"></script>
+<script src="/js/match.js?v=2"></script>
+</body>
+</html>

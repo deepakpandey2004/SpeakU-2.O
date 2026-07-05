@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>SpeakU - Free calls with native speakers</title>
+    <link rel="stylesheet" href="/css/style.css">
+<body>
+    <div class="lingbe-container">
+        <div class="lingbe-top">
+            <div class="dots-decoration">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+                <span></span>
+            </div>
+
+            <div class="lingbe-logo">
+                <div class="logo-icon">
+                    <span class="logo-dot-1"></span>
+                    <span class="logo-dot-2"></span>
+                </div>
+                <h1 class="logo-text">speaku</h1>
+            </div>
+
+            <h2 class="lingbe-heading">
+                Free calls with native speakers, anytime, anywhere
+            </h2>
+
+            <div class="blob-peach"></div>
+            <div class="blob-yellow"></div>
+        </div>
+
+        <div class="lingbe-bottom">
+            <div class="buttons-container">
+                <a href="/register.html" class="lingbe-btn lingbe-btn-white">
+                    <span class="btn-icon">✉️</span>
+                    <span>Sign up with email</span>
+                </a>
+                <a href="/login.html" class="lingbe-btn lingbe-btn-dark">
+                    <span class="btn-icon">🔐</span>
+                    <span>Login to your account</span>
+                </a>
+            </div>
+
+            <div class="login-link">
+                New here? <a href="/register.html">Create an account</a>
+            </div>
+
+            <div class="blob-bottom"></div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        const token = localStorage.getItem('speaku_access_token');
+        if (token && token.length > 20) {
+            window.location.href = '/home.html';
+        }
+    </script>
+</body>
+</html>
