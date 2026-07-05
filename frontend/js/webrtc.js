@@ -166,14 +166,12 @@
 
         switch (message.type) {
             case 'room-joined':
-                connectionStatus.textContent = '⏳ Waiting for partner...';
-                // If we're second person, we initiate the offer
-                if (message.peers_in_room === 2) {
-                    isInitiator = true;
-                    peerJoined = true;
-                    await createOffer();
-                }
-                break;
+    connectionStatus.textContent = '⏳ Waiting for partner...';
+    if (message.peers_in_room === 2) {
+        peerJoined = true;
+        
+    }
+    break;
 
             case 'peer-joined':
                 peerJoined = true;
