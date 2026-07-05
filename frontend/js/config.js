@@ -3,11 +3,11 @@ const IS_PRODUCTION = window.location.hostname !== 'localhost' &&
 
 const CONFIG = {
     API_BASE_URL: IS_PRODUCTION 
-        ? 'https://your-app.onrender.com'
+        ? 'https://speaku-2-o.onrender.com'
         : 'http://localhost:8000',
     
     WS_BASE_URL: IS_PRODUCTION
-        ? 'wss://your-app.onrender.com'
+        ? 'wss://speaku-2-o.onrender.com'
         : 'ws://localhost:8000',
     
     ENDPOINTS: {
