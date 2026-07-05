@@ -24,6 +24,10 @@
             <div style="margin-top: 8px; color: var(--text-secondary); font-size: 14px;">
                 <span id="connection-quality">🟢 Connected</span>
             </div>
+            <div style="margin-top: 8px; color: var(--text-secondary); font-size: 14px;">
+    <span id="connection-quality">🟢 Connected</span>
+</div>
+<div id="session-countdown" style="margin-top: 6px; color: var(--text-secondary); font-size: 13px;">⏳ 10:00 left</div>
 
             <div class="call-controls">
                 <button class="call-btn call-btn-mute" id="mute-btn" title="Mute/Unmute">🎤</button>
@@ -56,6 +60,20 @@
             </div>
         </div>
     </div>
+    <div id="continue-modal" class="rating-overlay" style="display: none;">
+    <div class="rating-card">
+        <h2>Session Time's Up!</h2>
+        <p style="color: var(--text-secondary); font-size: 14px;">Your 10-minute session has ended. Continue talking?</p>
+        <div class="call-controls" style="margin-top: 20px; justify-content: center; gap: 16px;">
+            <button id="continue-session-btn" class="cancel-call-btn" style="background: #22c55e;">
+                <span>▶️ Continue</span>
+            </button>
+            <button id="end-session-btn" class="cancel-call-btn" style="background: #ef4444;">
+                <span>📞 End Call</span>
+            </button>
+        </div>
+    </div>
+</div>
 
     <script src="/js/config.js?v=2"></script>
 <script src="/js/ui.js?v=2"></script>

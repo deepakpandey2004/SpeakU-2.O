@@ -33,6 +33,10 @@
     let isCallActive = false;
     let callStartTime = null;
     let callTimerInterval = null;
+    let callStartTime = null;
+    let callTimerInterval = null;
+    let sessionCountdownInterval = null;
+    const SESSION_LIMIT_SECONDS = 10 * 60; // 10 minutes
     let isInitiator = false;
     let peerJoined = false;
     let selectedRating = 0;
@@ -273,6 +277,7 @@
         callState.style.display = 'block';
         callStartTime = Date.now();
         startCallTimer();
+        startSessionCountdown();
         Toast.success('Call connected!');
     }
 
@@ -282,7 +287,41 @@
             const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
             callTimer.textContent = formatDuration(elapsed);
         }, 1000);
+        
     }
+
+    function startSessionCountdown() {
+    const countdownEl = document.getElementById('session-countdown');
+    sessionCountdownInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - callStartTime) / 1000);
+        const remaining = SESSION_LIMIT_SECONDS - elapsed;
+
+        if (remaining <= 0) {
+            countdownEl.textContent = '⏳ 00:00 left';
+            clearInterval(sessionCountdownInterval);
+            sessionCountdownInterval = null;
+            showContinueModal();
+        } else {
+            countdownEl.textContent = `⏳ ${formatDuration(remaining)} left`;
+        }
+        }, 1000);
+    }
+
+    function stopSessionCountdown() {
+        if (sessionCountdownInterval) {
+            clearInterval(sessionCountdownInterval);
+            sessionCountdownInterval = null;
+        }
+    }
+
+    function showContinueModal() {
+        document.getElementById('continue-modal').style.display = 'flex';
+        }
+
+    function hideContinueModal() {
+        document.getElementById('continue-modal').style.display = 'none';
+    }
+    
 
     // Stop call timer
     function stopCallTimer() {
@@ -315,10 +354,13 @@
 
     // End call
     async function handleCallEnd(fromPeer = false) {
-        if (callEnded) return;
-        callEnded = true;
+    if (callEnded) return;
+    callEnded = true;
 
-        stopCallTimer();
+    stopCallTimer();
+    stopSessionCountdown();
+
+    // Notify peer via signaling
 
         // Notify peer via signaling
         if (!fromPeer && signalingWs && signalingWs.isConnected) {
@@ -402,6 +444,17 @@
     muteBtn.addEventListener('click', toggleMute);
     speakerBtn.addEventListener('click', toggleSpeaker);
     endBtn.addEventListener('click', () => handleCallEnd(false));
+
+    document.getElementById('continue-session-btn').addEventListener('click', () => {
+    hideContinueModal();
+    callStartTime = Date.now();
+    startSessionCountdown();
+});
+
+document.getElementById('end-session-btn').addEventListener('click', () => {
+    hideContinueModal();
+    handleCallEnd(false);
+});
 
     window.addEventListener('beforeunload', (e) => {
         if (isCallActive && !callEnded) {
