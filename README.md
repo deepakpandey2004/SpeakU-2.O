@@ -15,7 +15,7 @@
 [![Deployed on Render](https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=flat&logo=render&logoColor=white)](https://render.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-[Live Demo]([https://speaku-2-o.onrender.com/](https://speaku-2-o.onrender.com/)) · [Report Bug](https://github.com/deepakpandey2004/speaku/issues) · [Request Feature](https://github.com/deepakpandey2004/speaku/issues)
+ · [Report Bug](https://github.com/deepakpandey2004/speaku/issues) · [Request Feature](https://github.com/deepakpandey2004/speaku/issues)
 
 </div>
 
