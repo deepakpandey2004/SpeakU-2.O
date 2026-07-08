@@ -34,3 +34,9 @@ migrations/__pycache__/
 htmlcov/
 
 .pytest_cache/
+
+*.code-workspace
+.vscode/
+
+
+attendance-system/
