@@ -39,8 +39,8 @@
     <td align="center"><b>Live Voice Call</b></td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/match.png" alt="Match finding" width="450"/></td>
-    <td><img src="docs/screenshots/call.png" alt="Voice call" width="450"/></td>
+    <td><img src="docs/screenshots/call.png" alt="Match finding" width="450"/></td>
+    <td><img src="docs/screenshots/match.png" alt="Voice call" width="450"/></td>
   </tr>
 </table>
 
