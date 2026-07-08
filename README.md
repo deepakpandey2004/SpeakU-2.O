@@ -40,7 +40,7 @@
   </tr>
   <tr>
     <td><img src="docs/screenshots/call.png" alt="Match finding" width="450"/></td>
-    <td><img src="docs/screenshots/call.png" alt="Voice call" width="450"/></td>
+    <td><img src="docs/screenshots/call.jpeg" alt="Voice call" width="450"/></td>
   </tr>
 </table>
 
